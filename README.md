@@ -13,13 +13,13 @@ Available statusline hints:
 
 ``` lua
 {
-    "roobert/statusline-action-hints.nvim",
-    config = function()
-        require("statusline-action-hints").setup({
-            definition_identifier = "gd",
-            template = "%s ref:%s",
-        })
-    end,
+  "roobert/statusline-action-hints.nvim",
+  config = function()
+    require("statusline-action-hints").setup({
+      definition_identifier = "gd",
+      template = "%s ref:%s",
+    })
+  end,
 }
 ```
 
@@ -27,13 +27,13 @@ Available statusline hints:
 
 ``` lua
 use({
-    "roobert/statusline-action-hints.nvim",
-    config = function()
-        require("statusline-action-hints").setup({
-            definition_identifier = "gd",
-            template = "%s ref:%s",
-        })
-    end,
+  "roobert/statusline-action-hints.nvim",
+  config = function()
+    require("statusline-action-hints").setup({
+      definition_identifier = "gd",
+      template = "%s ref:%s",
+    })
+  end,
 })
 ```
 
@@ -44,7 +44,7 @@ As a lualine statusline component:
 ``` lua
 require('lualine').setup {
   sections = {
-      lualine_x = { require("statusline-action-hints").statusline }
+    lualine_x = { require("statusline-action-hints").statusline }
   }
 }
 ```
