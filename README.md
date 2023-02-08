@@ -5,8 +5,8 @@
 A Neovim plugin to show statusline information about the word under the cursor.
 
 Available statusline hints:
-* go-to-definition is available
-* reference list available / number of references
+* go-to-definition (`gd`) is available
+* reference list (`gr`) available / number of references
 
 ## Installation
 
