@@ -30,8 +30,8 @@ use({
     "roobert/statusline-action-hints.nvim",
     config = function()
         require("statusline-action-hints").setup({
-			definition_identifier = "gd",
-			template = "%s ref:%s",
+            definition_identifier = "gd",
+            template = "%s ref:%s",
         })
     end,
 })
