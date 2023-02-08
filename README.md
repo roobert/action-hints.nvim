@@ -6,8 +6,7 @@ A Neovim plugin to show statusline information about the word under the cursor.
 
 Available statusline hints:
 * go-to-definition is available
-* reference list available
-* number of references
+* reference list available / number of references
 
 ## Installation
 
