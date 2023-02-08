@@ -1,4 +1,4 @@
-# Statusline Action Hints
+# :zap: Statusline Action Hints
 
 ![statusline-action-hints screenshot](https://user-images.githubusercontent.com/226654/217480442-ae97682d-c2e1-4dc3-a9d6-7d646ca4d025.gif)
 
