@@ -1,5 +1,10 @@
 M = {}
 
+M.config = {
+	definition_identifier = "gd",
+	template = "%s ref:%s",
+}
+
 M.references_available = false
 M.reference_count = 0
 M.definition_available = false
@@ -75,12 +80,21 @@ M.statusline = function()
 	local definition_status = ""
 
 	if M.definition_available then
-		definition_status = "gd"
+		definition_status = require("statusline-action-hints").config.definition_identifier
 	end
 
-	return string.format("%s refs:%s", definition_status, M.reference_count)
+	return string.format(require("statusline-action-hints").config.template, definition_status, M.reference_count)
 end
 
-M.setup = function() end
+M.setup = function(options)
+	if options == nil then
+		options = {}
+	end
+
+	-- merge user supplied options with defaults..
+	for k, v in pairs(options) do
+		require("statusline-action-hints").config[k] = v
+	end
+end
 
 return M

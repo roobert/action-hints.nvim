@@ -15,7 +15,10 @@ Available statusline hints:
 {
     "roobert/statusline-action-hints.nvim",
     config = function()
-        require("statusline-action-hints").setup()
+        require("statusline-action-hints").setup({
+            definition_identifier = "gd",
+            template = "%s ref:%s",
+        })
     end,
 }
 ```
@@ -26,7 +29,10 @@ Available statusline hints:
 use({
     "roobert/statusline-action-hints.nvim",
     config = function()
-        require("statusline-action-hints").setup()
+        require("statusline-action-hints").setup({
+			definition_identifier = "gd",
+			template = "%s ref:%s",
+        })
     end,
 })
 ```
