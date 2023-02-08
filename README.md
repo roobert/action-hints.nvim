@@ -1,6 +1,6 @@
 # Statusline Action Hints
 
-![statusline-action-hints](https://user-images.githubusercontent.com/226654/217479758-e711b989-90be-4d27-b5bc-aed5ea058d74.gif)
+![statusline-action-hints screenshot](https://user-images.githubusercontent.com/226654/217480442-ae97682d-c2e1-4dc3-a9d6-7d646ca4d025.gif)
 
 A Neovim plugin to show statusline information about the word under the cursor.
 
