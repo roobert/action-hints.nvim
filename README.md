@@ -21,7 +21,7 @@ Available statusline hints:
       template = "%s ref:%s",
     })
   end,
-}
+},
 ```
 
 ### Packer
@@ -45,7 +45,7 @@ As a lualine statusline component:
 ``` lua
 require('lualine').setup {
   sections = {
-    lualine_x = { require("statusline-action-hints").statusline }
+    lualine_x = { require("statusline-action-hints").statusline },
   }
 }
 ```
