@@ -21,7 +21,7 @@ Available statusline hints:
       template = "%s ref:%s",
     })
   end,
-}
+},
 ```
 
 ### Packer
