@@ -5,44 +5,63 @@
 A Neovim plugin to show statusline information about the word under the cursor.
 
 Available statusline hints:
-* go-to-definition (`gd`) is available
-* reference list (`gr`) available / number of references
+
+- go-to-definition (`gd`) is available
+- reference list (`gr`) available / number of references
 
 ## Installation
 
 ### Lazy
 
-``` lua
+```lua
 {
   "roobert/statusline-action-hints.nvim",
   config = function()
-    require("statusline-action-hints").setup({
-      definition_identifier = "gd",
-      template = "%s ref:%s",
-    })
+    require("statusline-action-hints").setup()
   end,
 },
 ```
 
 ### Packer
 
-``` lua
+```lua
 use({
   "roobert/statusline-action-hints.nvim",
   config = function()
-    require("statusline-action-hints").setup({
-      definition_identifier = "gd",
-      template = "%s ref:%s",
-    })
+    require("statusline-action-hints").setup()
   end,
 })
+```
+
+## Configuration
+
+```lua
+{
+  "roobert/statusline-action-hints.nvim",
+  config = function()
+    require("statusline-action-hints").setup({
+      template = {
+        { " ⊛", "StatuslineActionHintsDefinition" },
+        { " ↱%s", "StatuslineActionHintsReferences" },
+      },
+      use_virtual_text = true,
+    })
+  end,
+},
+```
+
+Adjust highlight colours for virtual text:
+
+```
+highlight StatuslineActionHintsDefinition guifg=#add8e6
+highlight StatuslineActionHintsReferences guifg=#ff6666
 ```
 
 ## Usage
 
 As a lualine statusline component:
 
-``` lua
+```lua
 require('lualine').setup {
   sections = {
     lualine_x = { require("statusline-action-hints").statusline },

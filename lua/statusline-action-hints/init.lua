@@ -1,13 +1,19 @@
 local M = {}
 
 M.config = {
-	definition_identifier = "gd",
-	template = "%s ref:%s",
+	template = {
+		{ " ⊛", "StatuslineActionHintsDefinition" },
+		{ " ↱%s", "StatuslineActionHintsReferences" },
+	},
+	use_virtual_text = false,
 }
 
 M.references_available = false
 M.reference_count = 0
 M.definition_available = false
+
+local references_namespace = vim.api.nvim_create_namespace("references")
+local last_virtual_text_line = nil
 
 local function debounce(func, delay)
 	local timer_id = nil
@@ -22,53 +28,88 @@ local function debounce(func, delay)
 	end
 end
 
-local function get_current_context()
-	local bufnr = vim.api.nvim_get_current_buf()
-	local cursor = vim.api.nvim_win_get_cursor(0)
-	local bufname = vim.api.nvim_buf_get_name(bufnr)
-	return bufnr, { line = cursor[1] - 1, character = cursor[2] }, bufname
+local function set_virtual_text(bufnr, line, chunks)
+	if last_virtual_text_line then
+		vim.api.nvim_buf_clear_namespace(
+			bufnr,
+			references_namespace,
+			last_virtual_text_line,
+			last_virtual_text_line + 1
+		)
+	end
+	vim.api.nvim_buf_set_virtual_text(bufnr, references_namespace, line, chunks, {})
+	last_virtual_text_line = line
 end
 
-local function lsp_request(method, params, callback)
-	local bufnr, position, uri = get_current_context()
-	params.textDocument = { uri = uri }
-	params.position = position
-	vim.lsp.buf_request(bufnr, method, params, callback)
+local function supports_method(method)
+	local clients = vim.lsp.buf_get_clients()
+	for _, client in pairs(clients) do
+		if client.server_capabilities[method] then
+			return true
+		end
+	end
+	return false
 end
 
 local function references()
-	lsp_request("textDocument/references", {
-		context = { includeDeclaration = true },
-	}, function(err, result, _, _)
-		if err then
-			error(tostring(err))
-		end
+	if not supports_method("referencesProvider") then
+		return
+	end
+	local bufnr = vim.api.nvim_get_current_buf()
+	local cursor = vim.api.nvim_win_get_cursor(0)
+	local bufname = vim.api.nvim_buf_get_name(bufnr)
 
-		if not result or vim.tbl_count(result) == 0 then
+	local params = {
+		textDocument = { uri = bufname },
+		position = { line = cursor[1] - 1, character = cursor[2] },
+		context = { includeDeclaration = true },
+	}
+
+	vim.lsp.buf_request(bufnr, "textDocument/references", params, function(err, result, _, _)
+		if err or not result then
 			M.references_available = false
 			M.reference_count = 0
 			return false
 		end
 
-		M.references_available = true
-		M.reference_count = vim.tbl_count(result) - 1
-		return true
+		if vim.tbl_count(result) > 0 then
+			M.references_available = true
+			M.reference_count = vim.tbl_count(result) - 1
+			return true
+		end
+
+		M.references_available = false
+		M.reference_count = 0
+		return false
 	end)
 end
 
 local function definition()
-	lsp_request("textDocument/definition", {}, function(err, result, _, _)
-		if err then
-			error(tostring(err))
-		end
+	if not supports_method("definitionProvider") then
+		return
+	end
+	local bufnr = vim.api.nvim_get_current_buf()
+	local cursor = vim.api.nvim_win_get_cursor(0)
+	local bufname = vim.api.nvim_buf_get_name(bufnr)
 
-		if not result or vim.tbl_count(result) == 0 then
+	local params = {
+		textDocument = { uri = bufname },
+		position = { line = cursor[1] - 1, character = cursor[2] },
+	}
+
+	vim.lsp.buf_request(bufnr, "textDocument/definition", params, function(err, result, _, _)
+		if err or not result then
 			M.definition_available = false
 			return false
 		end
 
-		M.definition_available = true
-		return true
+		if vim.tbl_count(result) > 0 then
+			M.definition_available = true
+			return true
+		end
+
+		M.definition_available = false
+		return false
 	end)
 end
 
@@ -79,13 +120,25 @@ M.statusline = function()
 	debounced_references()
 	debounced_definition()
 
-	local definition_status = ""
+	local definition_status = M.definition_available and " ⊛" or ""
+	local reference_status = M.reference_count > 0 and " ↱" .. tostring(M.reference_count) or ""
+	local chunks = {
+		{ definition_status, "StatuslineActionHintsDefinition" },
+		{ reference_status, "StatuslineActionHintsReferences" },
+	}
 
-	if M.definition_available then
-		definition_status = M.config.definition_identifier
+	if M.config.use_virtual_text then
+		local bufnr = vim.api.nvim_get_current_buf()
+		local cursor = vim.api.nvim_win_get_cursor(0)
+		set_virtual_text(bufnr, cursor[1] - 1, chunks)
 	end
 
-	return string.format(M.config.template, definition_status, M.reference_count)
+	local text = ""
+	for i, chunk in ipairs(chunks) do
+		text = text .. chunk[1]
+	end
+
+	return text
 end
 
 M.setup = function(options)
@@ -93,10 +146,14 @@ M.setup = function(options)
 		options = {}
 	end
 
-	-- merge user supplied options with defaults..
+	-- Merge user supplied options with defaults
 	for k, v in pairs(options) do
 		M.config[k] = v
 	end
+
+	-- Set default colors for StatuslineActionHintsDefinition and StatuslineActionHintsReferences
+	vim.api.nvim_command("highlight StatuslineActionHintsDefinition guifg=#add8e6")
+	vim.api.nvim_command("highlight StatuslineActionHintsReferences guifg=#ff6666")
 end
 
 return M
