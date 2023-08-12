@@ -59,6 +59,9 @@ highlight StatuslineActionHintsReferences guifg=#ff6666
 
 ## Usage
 
+Note that for now the component must be included in the lualine for the virtual text to
+be updated.
+
 As a lualine statusline component:
 
 ```lua
