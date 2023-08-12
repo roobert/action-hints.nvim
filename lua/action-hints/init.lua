@@ -2,8 +2,8 @@ local M = {}
 
 M.config = {
 	template = {
-		{ " ⊛", "StatuslineActionHintsDefinition" },
-		{ " ↱%s", "StatuslineActionHintsReferences" },
+		{ " ⊛", "ActionHintsDefinition" },
+		{ " ↱%s", "ActionHintsReferences" },
 	},
 	use_virtual_text = false,
 }
@@ -133,8 +133,8 @@ M.statusline = function()
 	local definition_status = M.definition_available and " ⊛" or ""
 	local reference_status = M.reference_count > 0 and " ↱" .. tostring(M.reference_count) or ""
 	local chunks = {
-		{ definition_status, "StatuslineActionHintsDefinition" },
-		{ reference_status, "StatuslineActionHintsReferences" },
+		{ definition_status, "ActionHintsDefinition" },
+		{ reference_status, "ActionHintsReferences" },
 	}
 
 	if M.config.use_virtual_text then
@@ -161,9 +161,9 @@ M.setup = function(options)
 		M.config[k] = v
 	end
 
-	-- Set default colors for StatuslineActionHintsDefinition and StatuslineActionHintsReferences
-	vim.api.nvim_command("highlight StatuslineActionHintsDefinition guifg=#add8e6")
-	vim.api.nvim_command("highlight StatuslineActionHintsReferences guifg=#ff6666")
+	-- Set default colors for ActionHintsDefinition and ActionHintsReferences
+	vim.api.nvim_command("highlight ActionHintsDefinition guifg=#add8e6")
+	vim.api.nvim_command("highlight ActionHintsReferences guifg=#ff6666")
 end
 
 return M
