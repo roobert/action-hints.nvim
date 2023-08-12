@@ -65,9 +65,9 @@ be updated.
 As a lualine component:
 
 ```lua
-require('lualine').setup {
+require("lualine").setup({
   sections = {
     lualine_x = { require("action-hints").statusline },
-  }
-}
+  },
+})
 ```
