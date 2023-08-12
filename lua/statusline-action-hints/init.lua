@@ -37,6 +37,16 @@ local function set_virtual_text(bufnr, line, chunks)
 			last_virtual_text_line + 1
 		)
 	end
+
+	-- Check if the current buffer is a regular file buffer
+	if
+		vim.api.nvim_buf_get_option(bufnr, "buftype") ~= ""
+		or vim.api.nvim_buf_get_option(bufnr, "filetype") == "help"
+		or vim.fn.bufname(bufnr) == ""
+	then
+		return -- Skip setting virtual text for non-editor buffers
+	end
+
 	vim.api.nvim_buf_set_virtual_text(bufnr, references_namespace, line, chunks, {})
 	last_virtual_text_line = line
 end
