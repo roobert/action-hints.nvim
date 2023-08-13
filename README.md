@@ -1,6 +1,6 @@
 # :zap: Action Hints
 
-![action-hints Screenshot](https://github.com/roobert/action-hints.nvim/assets/226654/501d8e4a-d501-4af4-a4e4-f6aed78974ca)
+![action-hints Screenshot](https://github.com/roobert/action-hints.nvim/assets/226654/41d2e228-0991-41bc-ac0e-bc20aa5ca54a)
 
 A Neovim plugin to show information about the word under the cursor in the statusline or as virtual text.
 
