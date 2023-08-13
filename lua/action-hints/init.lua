@@ -133,11 +133,13 @@ M.update = function()
 end
 
 M.statusline = function()
-	local definition_status = M.definition_available and " ⊛" or ""
-	local reference_status = M.reference_count > 0 and " ↱" .. tostring(M.reference_count) or ""
+	local definition_status = M.definition_available and string.format(M.config.template[1][1], "") or ""
+	local reference_status = M.reference_count > 0
+			and string.format(M.config.template[2][1], tostring(M.reference_count))
+		or ""
 	local chunks = {
-		{ definition_status, "ActionHintsDefinition" },
-		{ reference_status, "ActionHintsReferences" },
+		{ definition_status, M.config.template[1][2] },
+		{ reference_status, M.config.template[2][2] },
 	}
 
 	if M.config.use_virtual_text then
