@@ -45,29 +45,21 @@ use({
         { " ↱%s", "ActionHintsReferences" },
       },
       use_virtual_text = true,
+      definition_color = "#add8e6",
+      reference_color = "#ff6666",
     })
   end,
 },
 ```
 
-Adjust highlight colours for virtual text:
-
-```
-highlight ActionHintsDefinition guifg=#add8e6
-highlight ActionHintsReferences guifg=#ff6666
-```
-
 ## Usage
-
-Note that for now the component must be included in the lualine for the virtual text to
-be updated.
 
 As a lualine component:
 
 ```lua
 require("lualine").setup({
-  sections = {
-    lualine_x = { require("action-hints").statusline },
-  },
+	sections = {
+		lualine_x = { require("action-hints").statusline },
+	},
 })
 ```

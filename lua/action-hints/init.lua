@@ -6,6 +6,8 @@ M.config = {
 		{ " ↱%s", "ActionHintsReferences" },
 	},
 	use_virtual_text = false,
+	definition_color = "#add8e6",
+	reference_color = "#ff6666",
 }
 
 M.references_available = false
@@ -38,13 +40,12 @@ local function set_virtual_text(bufnr, line, chunks)
 		)
 	end
 
-	-- Check if the current buffer is a regular file buffer
 	if
 		vim.api.nvim_buf_get_option(bufnr, "buftype") ~= ""
 		or vim.api.nvim_buf_get_option(bufnr, "filetype") == "help"
 		or vim.fn.bufname(bufnr) == ""
 	then
-		return -- Skip setting virtual text for non-editor buffers
+		return
 	end
 
 	vim.api.nvim_buf_set_virtual_text(bufnr, references_namespace, line, chunks, {})
@@ -126,10 +127,12 @@ end
 local debounced_references = debounce(references, 100)
 local debounced_definition = debounce(definition, 100)
 
-M.statusline = function()
+M.update = function()
 	debounced_references()
 	debounced_definition()
+end
 
+M.statusline = function()
 	local definition_status = M.definition_available and " ⊛" or ""
 	local reference_status = M.reference_count > 0 and " ↱" .. tostring(M.reference_count) or ""
 	local chunks = {
@@ -156,14 +159,18 @@ M.setup = function(options)
 		options = {}
 	end
 
-	-- Merge user supplied options with defaults
 	for k, v in pairs(options) do
 		M.config[k] = v
 	end
 
-	-- Set default colors for ActionHintsDefinition and ActionHintsReferences
-	vim.api.nvim_command("highlight ActionHintsDefinition guifg=#add8e6")
-	vim.api.nvim_command("highlight ActionHintsReferences guifg=#ff6666")
+	local defColor = M.config.definition_color
+	local refColor = M.config.reference_color
+
+	vim.api.nvim_command("highlight ActionHintsDefinition guifg=" .. defColor)
+	vim.api.nvim_command("highlight ActionHintsReferences guifg=" .. refColor)
+
+	vim.api.nvim_command([[autocmd CursorMoved * lua require("action-hints").update()]])
+	vim.api.nvim_command([[autocmd CursorMovedI * lua require("action-hints").update()]])
 end
 
 return M
