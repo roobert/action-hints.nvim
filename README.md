@@ -2,12 +2,12 @@
 
 ![action-hints Screenshot](https://github.com/roobert/action-hints.nvim/assets/226654/501d8e4a-d501-4af4-a4e4-f6aed78974ca)
 
-A Neovim plugin to show information about the word under the cursor.
+A Neovim plugin to show information about the word under the cursor in the statusline or as virtual text.
 
 Available hints:
 
-- go-to-definition (`gd`) is available
-- reference list (`gr`) available / number of references
+- `⊛` - go-to-definition (`gd`) is available
+- `↱` reference list (`gr`) available / number of references
 
 ## Installation
 
