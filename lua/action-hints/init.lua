@@ -52,18 +52,8 @@ local function set_virtual_text(bufnr, line, chunks)
 	last_virtual_text_line = line
 end
 
-local function supports_method(method)
-	local clients = vim.lsp.buf_get_clients()
-	for _, client in pairs(clients) do
-		if client.server_capabilities[method] then
-			return true
-		end
-	end
-	return false
-end
-
 local function references()
-	if not supports_method("referencesProvider") then
+	if not M.supports_method("referencesProvider") then
 		return
 	end
 	local bufnr = vim.api.nvim_get_current_buf()
@@ -96,7 +86,7 @@ local function references()
 end
 
 local function definition()
-	if not supports_method("definitionProvider") then
+	if not M.supports_method("definitionProvider") then
 		return
 	end
 	local bufnr = vim.api.nvim_get_current_buf()
@@ -122,6 +112,16 @@ local function definition()
 		M.definition_available = false
 		return false
 	end)
+end
+
+M.supports_method = function(method)
+	local clients = vim.lsp.buf_get_clients()
+	for _, client in pairs(clients) do
+		if client.server_capabilities[method] then
+			return true
+		end
+	end
+	return false
 end
 
 local debounced_references = debounce(references, 100)
