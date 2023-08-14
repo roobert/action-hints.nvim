@@ -11,8 +11,6 @@ Available hints:
 
 ## Installation
 
-### Lazy
-
 ```lua
 {
   "roobert/action-hints.nvim",
@@ -20,17 +18,6 @@ Available hints:
     require("action-hints").setup()
   end,
 },
-```
-
-### Packer
-
-```lua
-use({
-  "roobert/action-hints.nvim",
-  config = function()
-    require("action-hints").setup()
-  end,
-})
 ```
 
 ## Configuration
