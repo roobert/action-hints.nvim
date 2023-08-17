@@ -2,7 +2,12 @@
 
 ![action-hints Screenshot](https://github.com/roobert/action-hints.nvim/assets/226654/41d2e228-0991-41bc-ac0e-bc20aa5ca54a)
 
-A Neovim plugin to show actions available for the word under the cursor in the statusline or as virtual text. Specifically: Go to definition and go to reference(s).
+A Neovim plugin that displays available actions like 'Go to Definition' and 'Go to Reference(s)' for the highlighted word, presented in the statusline or as virtual text.
+
+
+
+
+
 
 Available hints:
 
