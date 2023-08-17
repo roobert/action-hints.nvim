@@ -2,7 +2,7 @@
 
 ![action-hints Screenshot](https://github.com/roobert/action-hints.nvim/assets/226654/41d2e228-0991-41bc-ac0e-bc20aa5ca54a)
 
-A Neovim plugin to show information about the word under the cursor in the statusline or as virtual text.
+A Neovim plugin to show actions available for the word under the cursor in the statusline or as virtual text. Specifically: Goto definition and goto reference(s).
 
 Available hints:
 
